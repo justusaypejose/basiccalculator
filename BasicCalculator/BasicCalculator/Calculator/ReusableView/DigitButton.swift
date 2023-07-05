@@ -16,6 +16,7 @@ struct DigitButton: View {
     let backgroundColor: Color
     let foreGroundColor: Color
     let borderColor: Color
+    var isLarge: Bool = false
     
     var body: some View {
         
@@ -35,17 +36,27 @@ struct DigitButton: View {
         }) {
             Text(LocalizedStringKey(stringLiteral: digit))
                 .font(.custom("3x5", size: 44))
-                .frame(width: 50)
+                .frame(width: isLarge ? 150 : 50)
                 .padding()
-                .foregroundColor(!self.isTapped ? foreGroundColor : backgroundColor)
-                .background(self.isTapped ? foreGroundColor : backgroundColor)
+                .foregroundColor(fontColor())
+                .background(background())
                 .cornerRadius(10)
         }
         .padding(.all, 3)
+        .accessibilityLabel(Text(LocalizedStringKey(stringLiteral: digit)))
+        .accessibilityIdentifier(digit)
     }
     
     private func buttonValue(_ buttonTitle: String) -> String {
         buttonTitle.replacingOccurrences(of: "Button_", with: "")
+    }
+
+    private func fontColor() -> Color {
+       !self.isTapped ? foreGroundColor : backgroundColor
+    }
+    
+    private func background() -> Color {
+        self.isTapped ? foreGroundColor : backgroundColor
     }
 }
 

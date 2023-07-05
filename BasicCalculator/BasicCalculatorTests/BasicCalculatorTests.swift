@@ -9,28 +9,83 @@ import XCTest
 @testable import BasicCalculator
 
 final class BasicCalculatorTests: XCTestCase {
-
+    
+    var calculationViewModel: CalculationViewModel?
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        calculationViewModel = CalculationViewModel()
     }
-
+    
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        calculationViewModel = nil
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testAddition() {
+        guard let calculationViewModel else {
+            XCTFail("View model initializing failed")
+            return
         }
+        calculationViewModel.updateCalculation("1")
+        calculationViewModel.updateCalculation("+")
+        calculationViewModel.updateCalculation("1")
+        calculationViewModel.updateCalculation("=")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "2.0", "Addition Result calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("2.0")")
+    }
+    
+    func testSubtraction() {
+        guard let calculationViewModel else {
+            XCTFail("View model initializing failed")
+            return
+        }
+        calculationViewModel.updateCalculation("1")
+        calculationViewModel.updateCalculation("-")
+        calculationViewModel.updateCalculation("1")
+        calculationViewModel.updateCalculation("=")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "0.0", "Subtraction Result calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("0.0")")
+    }
+    
+    func testMultiplication() {
+        guard let calculationViewModel else {
+            XCTFail("View model initializing failed")
+            return
+        }
+        calculationViewModel.updateCalculation("5")
+        calculationViewModel.updateCalculation("*")
+        calculationViewModel.updateCalculation("5")
+        calculationViewModel.updateCalculation("=")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "25.0", "Multiplication Result calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("25.0")")
     }
 
+    func testDivision() {
+        guard let calculationViewModel else {
+            XCTFail("View model initializing failed")
+            return
+        }
+        calculationViewModel.updateCalculation("5")
+        calculationViewModel.updateCalculation("/")
+        calculationViewModel.updateCalculation("5")
+        calculationViewModel.updateCalculation("=")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "1.0", "Division Result calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("1.0")")
+    }
+    
+    func testEqualSign() {
+        guard let calculationViewModel else {
+            XCTFail("View model initializing failed")
+            return
+        }
+        calculationViewModel.updateCalculation("5")
+        calculationViewModel.updateCalculation("=")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "5.0", "Equal result calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("5.0")")
+    }
+    
+    func testResetC() {
+        guard let calculationViewModel else {
+            XCTFail("View model initializing failed")
+            return
+        }
+        calculationViewModel.updateCalculation("5")
+        calculationViewModel.updateCalculation("=")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "5.0", "Equal result calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("5.0")")
+        calculationViewModel.updateCalculation("C")
+        XCTAssertEqual(calculationViewModel.calculation.resultStack, "", "Reset calculated is not correct. Got \(calculationViewModel.calculation.resultStack), expected \("")")
+    }
 }

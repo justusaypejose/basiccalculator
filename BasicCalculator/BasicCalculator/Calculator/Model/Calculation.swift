@@ -8,6 +8,6 @@
 import Foundation
 
 struct Calculation {
-    var result: Double = 0.0
     var resultStack: String = ""
 }
+

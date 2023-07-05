@@ -21,14 +21,6 @@ struct CalculatorOutputView: View {
                 .padding()
                 .foregroundColor(backgroundColor)
             
-            
-            Text(viewModel.result())
-                .fontWeight(.bold)
-                .lineLimit(1)
-                .font(.system(.title, design: .rounded))
-                .multilineTextAlignment(.leading)
-                .frame(minHeight: 50)
-            
             outputView()
         }
     }
@@ -53,6 +45,7 @@ private extension CalculatorOutputView {
                         .stroke(Color.black, lineWidth: 2)
                 )
                 .cornerRadius(10)
+                .accessibilityIdentifier("outputfield")
             Spacer()
         }
         .padding(.horizontal, 5)

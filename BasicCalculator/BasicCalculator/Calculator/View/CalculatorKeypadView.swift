@@ -12,15 +12,20 @@ struct CalculatorKeypadView: View {
     
     @EnvironmentObject var viewModel: CalculationViewModel
 
-//    @State var cancellables = Set<AnyCancellable>()
     private var gridItemLayout = [GridItem(.adaptive(minimum: 70))]
-    
+    private var gridItemLayoutLarge = [GridItem(.adaptive(minimum: 200))]
+
     private var numericKeys: [String] = {
         var keys: [String] = []
         for each in 0...9 {
             keys.append("Button_\(each)")
         }
-        for each in ["C", "%", ".", "+", "-", "/", "*", "=", "(", ")"] {
+        return keys
+    }()
+    
+    private var symbolKeys: [String] = {
+        var keys: [String] = []
+        for each in ["C", ".", "+", "-", "/", "*"] {
             keys.append("Button_\(each)")
         }
         return keys
@@ -30,9 +35,15 @@ struct CalculatorKeypadView: View {
         
         ScrollView {
             LazyVGrid(columns: gridItemLayout, spacing: 5) {
+                ForEach(symbolKeys, id: \.self) { eachKey in
+                    DigitButton(digit: eachKey, backgroundColor: .black, foreGroundColor: .orange, borderColor: .black)
+                }
                 ForEach(numericKeys, id: \.self) { eachKey in
                     DigitButton(digit: eachKey, backgroundColor: .black, foreGroundColor: .white, borderColor: .black)
                 }
+            }
+            LazyVGrid(columns: gridItemLayoutLarge, spacing: 5) {
+                DigitButton(digit: "Button_=", backgroundColor: .black, foreGroundColor: .gray, borderColor: .black, isLarge: true)
             }
         }
         .padding()
